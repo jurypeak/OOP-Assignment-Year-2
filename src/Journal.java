@@ -1,0 +1,40 @@
+public class Journal extends BorrowableItem {
+    private Integer issueNo;
+    private String publisher;
+    private Integer numberOfPages;
+    private String subject;
+
+    public Journal(Integer issueNo, String publisher, Integer numberOfPages, String subject, Integer ID, String title, String type, Float cost, String location) {
+        super(ID, title, type, cost, location);
+        this.issueNo = issueNo;
+        this.publisher = publisher;
+        this.numberOfPages = numberOfPages;
+        this.subject = subject;
+    }
+
+    public Integer getIssueNo() {
+        return issueNo;
+    }
+    public String getPublisher() {
+        return publisher;
+    }
+    public Integer getNumberOfPages() {
+        return numberOfPages;
+    }
+    public String getSubject() {
+        return subject;
+    }
+
+    public void setIssueNo(Integer issueNo) {
+        this.issueNo = issueNo;
+    }
+    public void setPublisher(String publisher) {
+        this.publisher = publisher;
+    }
+    public void setNumberOfPages(Integer numberOfPages) {
+        this.numberOfPages = numberOfPages;
+    }
+    public void setSubject(String subject) {
+        this.subject = subject;
+    }
+}
