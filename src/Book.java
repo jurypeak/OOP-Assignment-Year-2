@@ -3,9 +3,9 @@ public class Book extends BorrowableItem {
     private Integer numberOfPages;
     private String publisher;
 
-    public Book(String author, Integer numberOfPages, String publisher, Integer ID,
+    public Book(String author, Integer numberOfPages, String publisher, Integer ID, Boolean issued,
                 String title, String type, Float cost, String location) {
-        super(ID, title, type, cost, location);
+        super(ID, title, issued, type, cost, location);
         this.author = author;
         this.numberOfPages = numberOfPages;
         this.publisher = publisher;

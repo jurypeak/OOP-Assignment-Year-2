@@ -1,9 +1,9 @@
 public class AVItem extends BorrowableItem{
     private String format;
-    private Integer duration;
+    private Float duration;
 
-    public AVItem(String format, Integer duration, Integer ID, String title, String type, Float cost, String location) {
-        super(ID, title, type, cost, location);
+    public AVItem(String format, Float duration, Integer ID, Boolean issued, String title, String type, Float cost, String location) {
+        super(ID, title, issued, type, cost, location);
         this.format = format;
         this.duration = duration;
     }
@@ -11,14 +11,14 @@ public class AVItem extends BorrowableItem{
     public String getFormat() {
         return format;
     }
-    public Integer getDuration() {
+    public Float getDuration() {
         return duration;
     }
 
     public void setFormat(String format) {
         this.format = format;
     }
-    public void setDuration(Integer duration) {
+    public void setDuration(Float duration) {
         this.duration = duration;
     }
 }

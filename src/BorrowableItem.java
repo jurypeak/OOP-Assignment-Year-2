@@ -1,3 +1,5 @@
+import java.util.stream.Collectors;
+
 public class BorrowableItem {
     private Float cost;
     private Integer ID;
@@ -6,7 +8,7 @@ public class BorrowableItem {
     private String title;
     private String type;
 
-    public BorrowableItem(Integer ID, String title, String type, Float cost, String location) {
+    public BorrowableItem(Integer ID, String title, Boolean issued, String type, Float cost, String location) {
         this.ID = ID;
         this.title = title;
         this.type = type;

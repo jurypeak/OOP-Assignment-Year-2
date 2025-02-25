@@ -1,25 +1,62 @@
-import java.util.FormatterClosedException;
-import java.util.MissingFormatArgumentException;
-
 public class View {
 
-    Inventory inventory = new Inventory();
+    private Controller controller = new Controller(new Inventory());
 
-    private void borrowableItemText() {
-        System.out.println("ID: ");
-        int ID = ValidateInt(System.console().readLine());
-        ValidateID(ID);
-        System.out.println("Title: ");
-        String title = ValidateString(System.console().readLine(), "Title");
-        System.out.println("Type: ");
-        String type = ValidateString(System.console().readLine(), "Type");
-        System.out.println("Cost: ");
-        String cost = System.console().readLine();
-        System.out.println("Location: ");
-        String location = ValidateString(System.console().readLine(), "Location");
+    public View() {
+        System.out.println("Welcome to the library!");
     }
 
-    public void addItem() {
+    public void displayMenu() {
+        boolean continueDisplay = true;
+        while (continueDisplay) {
+            System.out.println("-------------------------------");
+            System.out.println("Enter a number to select an option:");
+            System.out.println("1: Add an item");
+            System.out.println("2: View all items");
+            System.out.println("3: View item by ID");
+            System.out.println("4: Remove item by ID");
+            System.out.println("5: Exit");
+            System.out.println("-------------------------------");
+            int input = controller.ValidateInt(System.console().readLine(), "choice");
+            switch (input) {
+                case 1:
+                    addItemText();
+                    break;
+                case 2:
+                    ViewAllItems();
+                    break;
+                case 3:
+                    System.out.println("Enter the ID of the item you want to view:");
+                    break;
+                case 4:
+                    System.out.println("Enter the ID of the item you want to remove:");
+                    break;
+                case 5:
+                    System.out.println("Exiting...");
+                    continueDisplay = false;
+            }
+        }
+    }
+
+    private BorrowableItem borrowableItemText() {
+        System.out.println("ID: ");
+        int ID = controller.ValidateInt(System.console().readLine(), "number");
+        controller.ValidateID(ID);
+        System.out.println("Issued: ");
+        boolean issued = controller.ValidateBoolean(System.console().readLine());
+        System.out.println("Title: ");
+        String title = controller.ValidateString(System.console().readLine(), "title");
+        System.out.println("Type: ");
+        String type = controller.ValidateString(System.console().readLine(), "type");
+        System.out.println("Cost: ");
+        Float cost = controller.ValidateFloat(System.console().readLine(), "cost");
+        System.out.println("Location: ");
+        String location = controller.ValidateString(System.console().readLine(), "location");
+        BorrowableItem newItem = new BorrowableItem(ID, title, issued, type, cost, location);
+        return newItem;
+    }
+
+    public void addItemText() {
         System.out.println("-------------------------------");
         System.out.println("Enter a number to add an item:");
         System.out.println("1: Book");
@@ -27,76 +64,57 @@ public class View {
         System.out.println("3: Journal");
         System.out.println("4: Exit");
         System.out.println("-------------------------------");
-        int input = ValidateInt(System.console().readLine());
+        int input = controller.ValidateInt(System.console().readLine(), "choice");
         switch (input) {
             case 1:
                 System.out.println("Enter the following information about the book:");
                 System.out.println("Author: ");
-                String authorBook = System.console().readLine();
+                String authorBook = controller.ValidateString(System.console().readLine(), "author");
                 System.out.println("Number of pages: ");
-                String numberOfPagesBook = System.console().readLine();
+                int numberOfPagesBook = controller.ValidateInt(System.console().readLine(), "number of pages");
                 System.out.println("Publisher: ");
-                String publisherBook = System.console().readLine();
-                System.out.println("Title: ");
-                String titleBook = System.console().readLine();
-                borrowableItemText();
+                String publisherBook = controller.ValidateString(System.console().readLine(), "publisher");
+                BorrowableItem newBook = borrowableItemText();
+                controller.AddBook(authorBook, numberOfPagesBook, publisherBook, newBook.getID(), newBook.getIssued(),
+                        newBook.getTitle(), newBook.getType(), newBook.getCost(), newBook.getLocation());
+                System.out.println("Book added successfully.");
                 break;
             case 2:
                 System.out.println("Enter the following information about the AV item:");
                 System.out.println("Format: ");
-                String formatAV = System.console().readLine();
+                String formatAV = controller.ValidateString(System.console().readLine(), "format");
                 System.out.println("Duration: ");
-                String durationAV = System.console().readLine();
-                borrowableItemText();
+                float durationAV = controller.ValidateFloat(System.console().readLine(),  "duration");
+                BorrowableItem newAV = borrowableItemText();
+                controller.AddAVItem(formatAV, durationAV, newAV.getID(), newAV.getIssued(),
+                        newAV.getTitle(), newAV.getType(), newAV.getCost(), newAV.getLocation());
+                System.out.println("AV item added successfully.");
                 break;
             case 3:
                 System.out.println("Enter the following information about the journal:");
                 System.out.println("IssueNo: ");
-                String issueNoJournal = System.console().readLine();
+                int issueNoJournal = controller.ValidateInt(System.console().readLine(), "issue number");
                 System.out.println("Publisher: ");
-                String publisherJournal = System.console().readLine();
+                String publisherJournal = controller.ValidateString(System.console().readLine(), "publisher");
                 System.out.println("Number of pages: ");
-                String numberOfPagesJournal = System.console().readLine();
+                int numberOfPagesJournal = controller.ValidateInt(System.console().readLine(), "number of pages");
                 System.out.println("Subject: ");
-                String subjectJournal = System.console().readLine();
-                borrowableItemText();
+                String subjectJournal = controller.ValidateString(System.console().readLine(), "subject");
+                BorrowableItem newJournal = borrowableItemText();
+                controller.AddJournal(issueNoJournal, publisherJournal, numberOfPagesJournal, subjectJournal, newJournal.getID(), newJournal.getTitle(),
+                        newJournal.getIssued(), newJournal.getType(), newJournal.getCost(), newJournal.getLocation());
+                System.out.println("Journal added successfully.");
                 break;
             case 4:
                 System.out.println("Exiting...");
                 break;
         }
     }
-    public int ValidateInt(Object input) {
-        int validInput = -1;
-        try {
-            validInput = Integer.parseInt(input.toString());
-        } catch (NumberFormatException e) {
-            System.out.println("Invalid input. Please enter a valid choice or number.");
-            return ValidateInt(System.console().readLine());
-        }
-        return validInput;
-    }
-    public String ValidateString(Object input, String context) {
-        String validInput = "";
-        try {
-            validInput = input.toString();
-            if (validInput.equals("")) {
-                throw new FormatterClosedException();
-            }
-
-        } catch (FormatterClosedException e) {
-            System.out.println("Invalid input. Please enter a valid " + context + ".");
-            return ValidateString(System.console().readLine(), context);
-        }
-        return validInput;
-    }
-    public void ValidateID(int input) {
-        for (int i = 0; i < inventory.getNumberOfItems(); i++) {
-            if (input == inventory.getItemByIndex(i).getID()) {
-                System.out.println("ID is already in use. Please enter a new ID.");
-            } else {
-                System.out.println("ID added successfully.");
-            }
+    public void ViewAllItems() {
+        System.out.println("-------------------------------");
+        System.out.println("All items:");
+        for (int x = 0; x < controller.InventorySize(); x++) {
+            System.out.println(controller.PrintInventory(x));
         }
     }
 }
