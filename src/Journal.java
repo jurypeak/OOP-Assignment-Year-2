@@ -4,7 +4,8 @@ public class Journal extends BorrowableItem {
     private Integer numberOfPages;
     private String subject;
 
-    public Journal(Integer issueNo, String publisher, Integer numberOfPages, String subject, Integer ID, String title, String type, Float cost, String location) {
+    public Journal(Integer issueNo, String publisher, Integer numberOfPages, String subject, Integer ID,
+                   String title, String type, Float cost, String location) {
         super(ID, title, type, cost, location);
         this.issueNo = issueNo;
         this.publisher = publisher;
