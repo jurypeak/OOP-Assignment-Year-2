@@ -1,19 +1,22 @@
+import java.util.FormatterClosedException;
+import java.util.MissingFormatArgumentException;
+
 public class View {
 
     Inventory inventory = new Inventory();
 
     private void borrowableItemText() {
         System.out.println("ID: ");
-        int ID = ValidateInt(System.console().readLine().getClass());
+        int ID = ValidateInt(System.console().readLine());
         ValidateID(ID);
         System.out.println("Title: ");
-        String title = ValidateString(System.console().readLine());
+        String title = ValidateString(System.console().readLine(), "Title");
         System.out.println("Type: ");
-        String type = ValidateString(System.console().readLine());
+        String type = ValidateString(System.console().readLine(), "Type");
         System.out.println("Cost: ");
         String cost = System.console().readLine();
         System.out.println("Location: ");
-        String location = ValidateString(System.console().readLine());
+        String location = ValidateString(System.console().readLine(), "Location");
     }
 
     public void addItem() {
@@ -73,13 +76,17 @@ public class View {
         }
         return validInput;
     }
-    public String ValidateString(Object input) {
+    public String ValidateString(Object input, String context) {
         String validInput = "";
         try {
             validInput = input.toString();
-        } catch (NumberFormatException e) {
-            System.out.println("Invalid input. Please enter a valid choice or number.");
-            return ValidateString(System.console().readLine());
+            if (validInput.equals("")) {
+                throw new FormatterClosedException();
+            }
+
+        } catch (FormatterClosedException e) {
+            System.out.println("Invalid input. Please enter a valid " + context + ".");
+            return ValidateString(System.console().readLine(), context);
         }
         return validInput;
     }
