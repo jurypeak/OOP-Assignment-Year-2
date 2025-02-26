@@ -20,28 +20,28 @@ public class View {
             int input = controller.ValidateInt(System.console().readLine(), "choice");
             switch (input) {
                 case 1:
-                    addItemText();
+                    addItem();
                     break;
                 case 2:
                     ViewAllItems();
                     break;
                 case 3:
-                    System.out.println("Enter the ID of the item you want to view:");
+                    ViewItemByID();
                     break;
                 case 4:
-                    System.out.println("Enter the ID of the item you want to remove:");
+                    RemoveItemByID();
                     break;
                 case 5:
                     System.out.println("Exiting...");
                     continueDisplay = false;
+                    break;
             }
         }
     }
 
     private BorrowableItem borrowableItemText() {
         System.out.println("ID: ");
-        int ID = controller.ValidateInt(System.console().readLine(), "number");
-        controller.ValidateID(ID);
+        int ID = controller.ValidateID(controller.ValidateInt(System.console().readLine(), "number"));
         System.out.println("Issued: ");
         boolean issued = controller.ValidateBoolean(System.console().readLine());
         System.out.println("Title: ");
@@ -55,8 +55,7 @@ public class View {
         BorrowableItem newItem = new BorrowableItem(ID, title, issued, type, cost, location);
         return newItem;
     }
-
-    public void addItemText() {
+    public void addItem() {
         System.out.println("-------------------------------");
         System.out.println("Enter a number to add an item:");
         System.out.println("1: Book");
@@ -112,9 +111,18 @@ public class View {
     }
     public void ViewAllItems() {
         System.out.println("-------------------------------");
-        System.out.println("All items:");
-        for (int x = 0; x < controller.InventorySize(); x++) {
-            System.out.println(controller.PrintInventory(x));
-        }
+        controller.PrintInventory();
+    }
+    public void ViewItemByID() {
+        System.out.println("-------------------------------");
+        System.out.println("Enter the ID of the item you want to view:");
+        int ID = controller.ValidateInt(System.console().readLine(), "number");
+        controller.PrintItemByID(ID);
+    }
+    public void RemoveItemByID() {
+        System.out.println("-------------------------------");
+        System.out.println("Enter the ID of the item you want to remove:");
+        int ID = controller.ValidateInt(System.console().readLine(), "number");
+        controller.RemoveItemByID(ID);
     }
 }

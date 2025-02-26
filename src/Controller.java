@@ -23,7 +23,7 @@ public class Controller {
         try {
             validInput = Integer.parseInt(input.toString());
         } catch (NumberFormatException e) {
-            System.out.println("Invalid input. Please enter a valid " + context + ".");
+            System.out.println("Invalid input. Please enter a valid " + context + "!");
             return ValidateInt(System.console().readLine(), context);
         }
         return validInput;
@@ -37,7 +37,7 @@ public class Controller {
             }
 
         } catch (FormatterClosedException e) {
-            System.out.println("Invalid input. Please enter a valid " + context + ".");
+            System.out.println("Invalid input. Please enter a valid " + context + "!");
             return ValidateString(System.console().readLine(), context);
         }
         return validInput;
@@ -47,24 +47,45 @@ public class Controller {
         try {
             validInput = Float.parseFloat(input.toString());
         } catch (NumberFormatException e) {
-            System.out.println("Invalid input. Please enter a valid " + context + ".");
+            System.out.println("Invalid input. Please enter a valid " + context + "!");
             return ValidateFloat(System.console().readLine(), context);
         }
         return validInput;
     }
     public int ValidateID(int input) {
-        int validID = input;
         for (int i = 0; i < InventorySize(); i++) {
-            if (validID == inventory.getItemByIndex(i).getID()) {
-                System.out.println("ID already exists. Please enter a different ID.");
+            if (input == inventory.getItemByIndex(i).getID()) {
+                System.out.println("ID already exists. Please enter a different ID!");
                 return ValidateID(ValidateInt(System.console().readLine(), "ID"));
             }
         }
-        return validID;
+        return input;
     }
-    public String PrintInventory(int x) {
-        String item = Inventory.Convert(inventory.getItemByIndex(x));
-        return item;
+    public String GetItemByIndex(int x) {
+        return Inventory.convert(inventory.getItemByIndex(x));
+    }
+    public void PrintInventory() {
+        if (InventorySize() == 0) {
+            System.out.println("Inventory is empty!");
+        }
+        else {
+            System.out.println("All items in the inventory:");
+            for (int i = 0; i < InventorySize(); i++) {
+                System.out.println(GetItemByIndex(i));
+            }
+        }
+    }
+    public void PrintItemByID(int x) {
+        String item = Inventory.convert(inventory.findItemByID(x));
+        System.out.println(item);
+    }
+    public void RemoveItemByID(int x) {
+        if (inventory.removeItemByIndex(x)) {
+            System.out.println("Item removed successfully.");
+        }
+        else {
+            System.out.println("Item not found!");
+        }
     }
     public int InventorySize() {
         return inventory.getNumberOfItems();
@@ -77,7 +98,7 @@ public class Controller {
             return false;
         }
         else {
-            System.out.println("Invalid input. Please enter a valid answer, either yes or no.");
+            System.out.println("Invalid input. Please enter a valid answer, either yes or no!");
             return ValidateBoolean(System.console().readLine());
         }
     }

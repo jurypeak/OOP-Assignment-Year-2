@@ -51,18 +51,18 @@ public class Inventory {
     public void decrementCurrentRecord() {
         currentRecord--;
     }
-    public Integer findItemByID(Integer ID) {
+    public BorrowableItem findItemByID(Integer ID) {
         for (int i = 0; i < allItems.size(); i++) {
             if (allItems.get(i).getID() == ID) {
-                return i;
+                return allItems.get(i);
             }
             else {
-                return -1;
+                return null;
             }
         }
-        return -1;
+        return null;
     }
-    public static String Convert(Object obj) {
+    public static String convert(Object obj) {
         if (obj == null) return "null";
 
         StringBuilder result = new StringBuilder(obj.getClass().getSimpleName() + " {");

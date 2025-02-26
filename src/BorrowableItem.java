@@ -11,10 +11,10 @@ public class BorrowableItem {
     public BorrowableItem(Integer ID, String title, Boolean issued, String type, Float cost, String location) {
         this.ID = ID;
         this.title = title;
+        this.issued = issued;
         this.type = type;
         this.cost = cost;
         this.location = location;
-        this.issued = false;
     }
 
     public float getCost() {
