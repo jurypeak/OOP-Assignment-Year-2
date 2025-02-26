@@ -117,12 +117,14 @@ public class View {
         System.out.println("-------------------------------");
         System.out.println("Enter the ID of the item you want to view:");
         int ID = controller.ValidateInt(System.console().readLine(), "number");
+        System.out.println("-------------------------------");
         controller.PrintItemByID(ID);
     }
     public void RemoveItemByID() {
         System.out.println("-------------------------------");
         System.out.println("Enter the ID of the item you want to remove:");
         int ID = controller.ValidateInt(System.console().readLine(), "number");
+        System.out.println("-------------------------------");
         controller.RemoveItemByID(ID);
     }
 }

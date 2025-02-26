@@ -77,7 +77,13 @@ public class Controller {
     }
     public void PrintItemByID(int x) {
         String item = Inventory.convert(inventory.findItemByID(x));
-        System.out.println(item);
+        if (item.equals("null")) {
+            System.out.println("Item not found!");
+        }
+        else {
+            System.out.println("Item found!");
+            System.out.println(item);
+        }
     }
     public void RemoveItemByID(int x) {
         if (inventory.removeItemByIndex(x)) {
