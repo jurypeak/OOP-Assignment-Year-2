@@ -1,21 +1,25 @@
 public class View {
 
-    private Controller controller = new Controller(new Inventory());
+    private final Controller controller = new Controller(new Inventory());
 
     public View() {
+        System.out.println("-------------------------------");
         System.out.println("Welcome to the library!");
+        displayMenu();
     }
 
-    public void displayMenu() {
-        boolean continueDisplay = true;
-        while (continueDisplay) {
+    private void displayMenu() {
+        while (true) {
             System.out.println("-------------------------------");
             System.out.println("Enter a number to select an option:");
             System.out.println("1: Add an item");
-            System.out.println("2: View all items");
-            System.out.println("3: View item by ID");
-            System.out.println("4: Remove item by ID");
-            System.out.println("5: Exit");
+            System.out.println("2: Edit an existing item");
+            System.out.println("3: View all items");
+            System.out.println("4: View item by ID");
+            System.out.println("5: Remove item by ID");
+            System.out.println("6: Calculate total cost");
+            System.out.println("7: Calculate insurance cost");
+            System.out.println("8: Exit");
             System.out.println("-------------------------------");
             int input = controller.ValidateInt(System.console().readLine(), "choice");
             switch (input) {
@@ -23,17 +27,29 @@ public class View {
                     addItem();
                     break;
                 case 2:
-                    ViewAllItems();
+                    EditItem();
                     break;
                 case 3:
-                    ViewItemByID();
+                    ViewAllItems();
                     break;
                 case 4:
-                    RemoveItemByID();
+                    ViewItemByID();
                     break;
                 case 5:
+                    RemoveItemByID();
+                    break;
+                case 6:
+                    CalculateTotalInventoryCost();
+                    break;
+                case 7:
+                    CalculateInsuranceCost();
+                    break;
+                case 8:
+                    System.out.println("-------------------------------");
+                    System.out.println("Thank you for using the library!");
                     System.out.println("Exiting...");
-                    continueDisplay = false;
+                    System.out.println("-------------------------------");
+                    System.exit(0);
                     break;
             }
         }
@@ -42,7 +58,7 @@ public class View {
     private BorrowableItem borrowableItemText() {
         System.out.println("ID: ");
         int ID = controller.ValidateID(controller.ValidateInt(System.console().readLine(), "number"));
-        System.out.println("Issued: ");
+        System.out.println("Is it issued? (y/n): ");
         boolean issued = controller.ValidateBoolean(System.console().readLine());
         System.out.println("Title: ");
         String title = controller.ValidateString(System.console().readLine(), "title");
@@ -52,10 +68,9 @@ public class View {
         Float cost = controller.ValidateFloat(System.console().readLine(), "cost");
         System.out.println("Location: ");
         String location = controller.ValidateString(System.console().readLine(), "location");
-        BorrowableItem newItem = new BorrowableItem(ID, title, issued, type, cost, location);
-        return newItem;
+        return new BorrowableItem(ID, title, issued, type, cost, location);
     }
-    public void addItem() {
+    private void addItem() {
         System.out.println("-------------------------------");
         System.out.println("Enter a number to add an item:");
         System.out.println("1: Book");
@@ -66,7 +81,9 @@ public class View {
         int input = controller.ValidateInt(System.console().readLine(), "choice");
         switch (input) {
             case 1:
+                System.out.println("-------------------------------");
                 System.out.println("Enter the following information about the book:");
+                System.out.println("-------------------------------");
                 System.out.println("Author: ");
                 String authorBook = controller.ValidateString(System.console().readLine(), "author");
                 System.out.println("Number of pages: ");
@@ -79,9 +96,15 @@ public class View {
                 System.out.println("Book added successfully.");
                 break;
             case 2:
+                System.out.println("-------------------------------");
                 System.out.println("Enter the following information about the AV item:");
-                System.out.println("Format: ");
-                String formatAV = controller.ValidateString(System.console().readLine(), "format");
+                System.out.println("-------------------------------");
+                System.out.println("Choose the format: ");
+                System.out.println("-------------------------------");
+                System.out.println("1: CD");
+                System.out.println("2: DVD");
+                System.out.println("-------------------------------");
+                String formatAV = controller.FormatChoice(controller.ValidateInt(System.console().readLine(), "choice"));
                 System.out.println("Duration: ");
                 float durationAV = controller.ValidateFloat(System.console().readLine(),  "duration");
                 BorrowableItem newAV = borrowableItemText();
@@ -90,8 +113,10 @@ public class View {
                 System.out.println("AV item added successfully.");
                 break;
             case 3:
+                System.out.println("-------------------------------");
                 System.out.println("Enter the following information about the journal:");
                 System.out.println("IssueNo: ");
+                System.out.println("-------------------------------");
                 int issueNoJournal = controller.ValidateInt(System.console().readLine(), "issue number");
                 System.out.println("Publisher: ");
                 String publisherJournal = controller.ValidateString(System.console().readLine(), "publisher");
@@ -105,26 +130,42 @@ public class View {
                 System.out.println("Journal added successfully.");
                 break;
             case 4:
+                System.out.println("-------------------------------");
                 System.out.println("Exiting...");
                 break;
         }
     }
-    public void ViewAllItems() {
+    private void EditItem() {
+        System.out.println("-------------------------------");
+        System.out.println("Enter the ID of the item you want to edit:");
+        int ID = controller.ValidateInt(System.console().readLine(), "number");
+        controller.EditItem(ID);
+    }
+    private void ViewAllItems() {
         System.out.println("-------------------------------");
         controller.PrintInventory();
     }
-    public void ViewItemByID() {
+    private void ViewItemByID() {
         System.out.println("-------------------------------");
         System.out.println("Enter the ID of the item you want to view:");
         int ID = controller.ValidateInt(System.console().readLine(), "number");
         System.out.println("-------------------------------");
         controller.PrintItemByID(ID);
     }
-    public void RemoveItemByID() {
+    private void RemoveItemByID() {
         System.out.println("-------------------------------");
         System.out.println("Enter the ID of the item you want to remove:");
         int ID = controller.ValidateInt(System.console().readLine(), "number");
         System.out.println("-------------------------------");
         controller.RemoveItemByID(ID);
+    }
+    private void CalculateTotalInventoryCost() {
+        System.out.println("-------------------------------");
+        System.out.println("Total cost: " + controller.CalcTotalCost());
+
+    }
+    private void CalculateInsuranceCost() {
+        System.out.println("-------------------------------");
+        System.out.println("Insurance cost: " + controller.CalcInsuranceCost());
     }
 }

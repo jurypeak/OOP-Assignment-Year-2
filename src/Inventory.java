@@ -62,7 +62,7 @@ public class Inventory {
         }
         return null;
     }
-    public static String convert(Object obj) {
+    public static String ObjectToString(Object obj) {
         if (obj == null) return "null";
 
         StringBuilder result = new StringBuilder(obj.getClass().getSimpleName() + " {");
