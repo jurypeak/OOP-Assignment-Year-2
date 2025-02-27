@@ -1,171 +1,58 @@
+import java.util.Scanner;
+
 public class View {
 
-    private final Controller controller = new Controller(new Inventory());
+    // Create a new controller.
+    private final Controller controller;
+    // Create a new scanner to get user input.
+    private final Scanner scanner = new Scanner(System.in);
 
-    public View() {
-        System.out.println("-------------------------------");
-        System.out.println("Welcome to the library!");
-        displayMenu();
+    public View(Controller controller) {
+        this.controller = controller;
     }
 
-    private void displayMenu() {
+    // Display main menu.
+    public void displayMenu() {
         while (true) {
-            System.out.println("-------------------------------");
-            System.out.println("Enter a number to select an option:");
-            System.out.println("1: Add an item");
-            System.out.println("2: Edit an existing item");
-            System.out.println("3: View all items");
-            System.out.println("4: View item by ID");
-            System.out.println("5: Remove item by ID");
-            System.out.println("6: Calculate total cost");
-            System.out.println("7: Calculate insurance cost");
-            System.out.println("8: Exit");
-            System.out.println("-------------------------------");
-            int input = controller.ValidateInt(System.console().readLine(), "choice");
-            switch (input) {
-                case 1:
-                    addItem();
-                    break;
-                case 2:
-                    EditItem();
-                    break;
-                case 3:
-                    ViewAllItems();
-                    break;
-                case 4:
-                    ViewItemByID();
-                    break;
-                case 5:
-                    RemoveItemByID();
-                    break;
-                case 6:
-                    CalculateTotalInventoryCost();
-                    break;
-                case 7:
-                    CalculateInsuranceCost();
-                    break;
-                case 8:
-                    System.out.println("-------------------------------");
-                    System.out.println("Thank you for using the library!");
-                    System.out.println("Exiting...");
-                    System.out.println("-------------------------------");
-                    System.exit(0);
-                    break;
-            }
+            displayMessage("-------------------------------");
+            displayMessage("Enter a number to select an option:");
+            displayMessage("1: Add an item");
+            displayMessage("2: Edit an existing item");
+            displayMessage("3: View all items");
+            displayMessage("4: Search for an item by ID");
+            displayMessage("5: Remove item by ID");
+            displayMessage("6: Calculate total cost");
+            displayMessage("7: Calculate insurance cost");
+            displayMessage("8: Exit");
+            displayMessage("-------------------------------");
+
+            String choice = (scanner.nextLine());
+            controller.handleMainMenuChoice(choice);
         }
     }
-
-    private BorrowableItem borrowableItemText() {
-        System.out.println("ID: ");
-        int ID = controller.ValidateID(controller.ValidateInt(System.console().readLine(), "number"));
-        System.out.println("Is it issued? (y/n): ");
-        boolean issued = controller.ValidateBoolean(System.console().readLine());
-        System.out.println("Title: ");
-        String title = controller.ValidateString(System.console().readLine(), "title");
-        System.out.println("Type: ");
-        String type = controller.ValidateString(System.console().readLine(), "type");
-        System.out.println("Cost: ");
-        Float cost = controller.ValidateFloat(System.console().readLine(), "cost");
-        System.out.println("Location: ");
-        String location = controller.ValidateString(System.console().readLine(), "location");
-        return new BorrowableItem(ID, title, issued, type, cost, location);
+    // Display a message.
+    public void displayMessage(String message) {
+        System.out.println(message);
     }
-    private void addItem() {
-        System.out.println("-------------------------------");
-        System.out.println("Enter a number to add an item:");
-        System.out.println("1: Book");
-        System.out.println("2: AV Item");
-        System.out.println("3: Journal");
-        System.out.println("4: Exit");
-        System.out.println("-------------------------------");
-        int input = controller.ValidateInt(System.console().readLine(), "choice");
-        switch (input) {
-            case 1:
-                System.out.println("-------------------------------");
-                System.out.println("Enter the following information about the book:");
-                System.out.println("-------------------------------");
-                System.out.println("Author: ");
-                String authorBook = controller.ValidateString(System.console().readLine(), "author");
-                System.out.println("Number of pages: ");
-                int numberOfPagesBook = controller.ValidateInt(System.console().readLine(), "number of pages");
-                System.out.println("Publisher: ");
-                String publisherBook = controller.ValidateString(System.console().readLine(), "publisher");
-                BorrowableItem newBook = borrowableItemText();
-                controller.AddBook(authorBook, numberOfPagesBook, publisherBook, newBook.getID(), newBook.getIssued(),
-                        newBook.getTitle(), newBook.getType(), newBook.getCost(), newBook.getLocation());
-                System.out.println("Book added successfully.");
-                break;
-            case 2:
-                System.out.println("-------------------------------");
-                System.out.println("Enter the following information about the AV item:");
-                System.out.println("-------------------------------");
-                System.out.println("Choose the format: ");
-                System.out.println("-------------------------------");
-                System.out.println("1: CD");
-                System.out.println("2: DVD");
-                System.out.println("-------------------------------");
-                String formatAV = controller.FormatChoice(controller.ValidateInt(System.console().readLine(), "choice"));
-                System.out.println("Duration: ");
-                float durationAV = controller.ValidateFloat(System.console().readLine(),  "duration");
-                BorrowableItem newAV = borrowableItemText();
-                controller.AddAVItem(formatAV, durationAV, newAV.getID(), newAV.getIssued(),
-                        newAV.getTitle(), newAV.getType(), newAV.getCost(), newAV.getLocation());
-                System.out.println("AV item added successfully.");
-                break;
-            case 3:
-                System.out.println("-------------------------------");
-                System.out.println("Enter the following information about the journal:");
-                System.out.println("IssueNo: ");
-                System.out.println("-------------------------------");
-                int issueNoJournal = controller.ValidateInt(System.console().readLine(), "issue number");
-                System.out.println("Publisher: ");
-                String publisherJournal = controller.ValidateString(System.console().readLine(), "publisher");
-                System.out.println("Number of pages: ");
-                int numberOfPagesJournal = controller.ValidateInt(System.console().readLine(), "number of pages");
-                System.out.println("Subject: ");
-                String subjectJournal = controller.ValidateString(System.console().readLine(), "subject");
-                BorrowableItem newJournal = borrowableItemText();
-                controller.AddJournal(issueNoJournal, publisherJournal, numberOfPagesJournal, subjectJournal, newJournal.getID(), newJournal.getTitle(),
-                        newJournal.getIssued(), newJournal.getType(), newJournal.getCost(), newJournal.getLocation());
-                System.out.println("Journal added successfully.");
-                break;
-            case 4:
-                System.out.println("-------------------------------");
-                System.out.println("Exiting...");
-                break;
-        }
+    // Display add item menu.
+    public void displayAddItemMenu() {
+        displayMessage("-------------------------------");
+        displayMessage("Enter a number to add an item:");
+        displayMessage("1: Book");
+        displayMessage("2: AV Item");
+        displayMessage("3: Journal");
+        displayMessage("4: Exit");
+        displayMessage("-------------------------------");
     }
-    private void EditItem() {
-        System.out.println("-------------------------------");
-        System.out.println("Enter the ID of the item you want to edit:");
-        int ID = controller.ValidateInt(System.console().readLine(), "number");
-        controller.EditItem(ID);
+    // Display exit message.
+    public void displayExitMessage() {
+        displayMessage("-------------------------------");
+        displayMessage("Exiting...");
     }
-    private void ViewAllItems() {
-        System.out.println("-------------------------------");
-        controller.PrintInventory();
-    }
-    private void ViewItemByID() {
-        System.out.println("-------------------------------");
-        System.out.println("Enter the ID of the item you want to view:");
-        int ID = controller.ValidateInt(System.console().readLine(), "number");
-        System.out.println("-------------------------------");
-        controller.PrintItemByID(ID);
-    }
-    private void RemoveItemByID() {
-        System.out.println("-------------------------------");
-        System.out.println("Enter the ID of the item you want to remove:");
-        int ID = controller.ValidateInt(System.console().readLine(), "number");
-        System.out.println("-------------------------------");
-        controller.RemoveItemByID(ID);
-    }
-    private void CalculateTotalInventoryCost() {
-        System.out.println("-------------------------------");
-        System.out.println("Total cost: " + controller.CalcTotalCost());
-
-    }
-    private void CalculateInsuranceCost() {
-        System.out.println("-------------------------------");
-        System.out.println("Insurance cost: " + controller.CalcInsuranceCost());
+    // Display a message and get user input of string.
+    public String getUserInput(String prompt) {
+        displayMessage(prompt);
+        return scanner.nextLine();
     }
 }
+

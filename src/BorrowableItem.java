@@ -7,7 +7,7 @@ public class BorrowableItem {
     private String location;
     private String title;
     private String type;
-
+    // Constructor
     public BorrowableItem(Integer ID, String title, Boolean issued, String type, Float cost, String location) {
         this.ID = ID;
         this.title = title;
@@ -16,7 +16,7 @@ public class BorrowableItem {
         this.cost = cost;
         this.location = location;
     }
-
+    // Getters
     public float getCost() {
         return cost;
     }
@@ -35,7 +35,7 @@ public class BorrowableItem {
     public String getType() {
         return type;
     }
-
+    // Setters
     public void setCost(Float cost) {
         this.cost = cost;
     }
