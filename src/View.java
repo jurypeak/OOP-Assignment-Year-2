@@ -5,7 +5,7 @@ public class View {
     // Create a new controller.
     private final Controller controller;
     // Create a new scanner to get user input.
-    private final Scanner scanner = new Scanner(System.in);
+    private final Scanner scan = new Scanner(System.in);
 
     public View(Controller controller) {
         this.controller = controller;
@@ -26,7 +26,7 @@ public class View {
             displayMessage("8: Exit");
             displayMessage("-------------------------------");
 
-            String choice = (scanner.nextLine());
+            String choice = (scan.nextLine());
             controller.handleMainMenuChoice(choice);
         }
     }
@@ -52,7 +52,7 @@ public class View {
     // Display a message and get user input of string.
     public String getUserInput(String prompt) {
         displayMessage(prompt);
-        return scanner.nextLine();
+        return scan.nextLine();
     }
 }
 
