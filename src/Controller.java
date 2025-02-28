@@ -56,9 +56,13 @@ public class Controller {
         }
         return input;
     }
-    // Call getItemByIndex method in inventory.
+    // Call getItemByIndex method in inventory and turn it to a string.
     public String GetItemByIndex(int x) {
         return Inventory.ObjectToString(inventory.getItemByIndex(x));
+    }
+    // Call findItemByID method in inventory and turn it to a string.
+    public String GetItemByID(int x) {
+        return Inventory.ObjectToString(inventory.findItemByID(x));
     }
     // Call view to display each item in inventory to string.
     public void PrintInventory() {
@@ -77,7 +81,7 @@ public class Controller {
     }
     // Call view to display item with the associated ID inputted by user (if it exists).
     public void PrintItemByID(int x) {
-        String item = GetItemByIndex(x);
+        String item = GetItemByID(x);
         if (item.equals("null")) {
             view.displayMessage("Item not found!");
         }
@@ -283,7 +287,7 @@ public class Controller {
                 break;
             case 8:
                 view.displayExitMessage();
-                break;
+                System.exit(0);
         }
     }
     // Call view to get users choice when using the add item menu.
@@ -323,7 +327,7 @@ public class Controller {
     // Call view to get users input for the add AVItem function.
     private void addAVItem() {
         // Validate all users input.
-        int formatChoice = ValidateInt(view.getUserInput("""
+        String format = FormatChoice(ValidateInt(view.getUserInput("""
                 -------------------------------\
                 
                 Choose a format:\
@@ -333,8 +337,7 @@ public class Controller {
                 1: CD\s
                 2: DVD\
    
-                -------------------------------"""), "choice");
-        String format = (formatChoice == 1) ? "CD" : "DVD";
+                -------------------------------"""), "choice"));
         float duration = ValidateFloat(view.getUserInput("Enter the duration:"), "duration");
         BorrowableItem avItem = getBorrowableItemDetails();
         // Call the inventory to add AVItem with the users input.
